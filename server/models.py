@@ -24,6 +24,8 @@ class User(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
+    _hashed_password = db.Column(db.String)
+    #underscore means it's a private variable, should only be accessible inside the class
 
     notes = db.relationship('Note', back_populates='user')
 

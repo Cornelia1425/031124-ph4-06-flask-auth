@@ -1,11 +1,34 @@
 import { useState } from 'react'
 
-function Signup() {
+function Signup({setCurrentUser}) {
+
+  // STATE //
+
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
   // EVENTS //
 
   function handleSubmit(e) {
-    console.log(e)
+    e.preventDefault()
+
+    fetch('/api/users', {
+      method: 'POST',
+      headers:{'Content-Type':'application/json', 'Accept':'application/json'},
+      body:JSON.stringify({username, password})
+    })
+    .then(response => {
+      if (response.ok){
+        response.json()
+        .then(newUser=>setCurrentUser(newUser))
+      }else{
+        alert("Signup unsuccessful")
+      }
+    })
+
+    
+
+    //console.log(e)
   }
 
   // RENDER //
@@ -16,10 +39,15 @@ function Signup() {
       <h2>Signup</h2>
 
       <input type="text"
+      onChange={e=>setUsername(e.target.value)}
+      value={username}
       placeholder='username'
+
       />
 
-      <input type="text"
+      <input type="text" //"password"
+      onChange={e=>setPassword(e.target.value)}
+      value={password}
       placeholder='password'
       />
 
